@@ -4,3 +4,17 @@ __pycache__/
 *.py[cod]
 *.log
 reports/
+
+# Local submission report and evidence
+RAPPORT.md
+RAPPORT.tex
+RAPPORT.pdf
+screenshots/
+
+# LaTeX build artifacts
+*.aux
+*.fdb_latexmk
+*.fls
+*.out
+*.synctex.gz
+*.toc
