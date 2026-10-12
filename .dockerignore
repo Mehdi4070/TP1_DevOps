@@ -1,0 +1,16 @@
+.git
+.github
+.idea
+.pytest_cache
+.venv
+__pycache__
+*.py[cod]
+*.log
+reports
+screenshots
+RAPPORT.md
+README.md
+Jenkinsfile
+docker-compose.yml
+nginx.conf
+tests

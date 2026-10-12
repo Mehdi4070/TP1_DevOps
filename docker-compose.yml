@@ -1,0 +1,51 @@
+services:
+  db-service:
+    image: redis:7.4-alpine
+    command: ["redis-server", "--appendonly", "yes", "--appendfsync", "always"]
+    volumes:
+      - redis-data:/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+    image: "${IMAGE_NAME:-counter-app:1.0}"
+    environment:
+      REDIS_HOST: db-service
+      REDIS_PORT: 6379
+    expose:
+      - "5000"
+    networks:
+      - app-network
+    depends_on:
+      db-service:
+        condition: service_healthy
+    restart: unless-stopped
+
+  load-balancer:
+    image: nginx:1.27-alpine
+    ports:
+      - "${APP_PORT:-80}:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - app-network
+    depends_on:
+      - web
+    restart: unless-stopped
+
+networks:
+  app-network:
+    name: app-network
+    driver: bridge
+
+volumes:
+  redis-data:
+    name: redis-data
