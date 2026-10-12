@@ -30,7 +30,7 @@ pipeline {
                     . .venv/bin/activate
                     python -m pip install --disable-pip-version-check -r requirements-dev.txt
                     mkdir -p reports
-                    pytest -q --junitxml=reports/pytest.xml
+                    python -m pytest -q --junitxml=reports/pytest.xml
                 '''
             }
         }
